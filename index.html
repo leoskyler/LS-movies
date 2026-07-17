@@ -7,12 +7,13 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-theme">
-<!-- Netflix Style Cinematic Intro Splash Screen -->
-<div id="splash-screen">
-  <div class="splash-logo-container">
-    <h1 class="splash-logo">♣︎leoskyler♣︎movies</h1>
+
+  <!-- Netflix Style Cinematic Intro Splash Screen -->
+  <div id="splash-screen">
+    <div class="splash-logo-container">
+      <h1 class="splash-logo">♣︎leoskyler♣︎movies</h1>
+    </div>
   </div>
-</div>
 
   <!-- Main Container -->
   <div class="app-container">
@@ -26,7 +27,7 @@
       </div>
     </header>
 
-    <!-- Navigation Tabs (Netflix/Apple Style) -->
+    <!-- Navigation Tabs -->
     <div class="navigation-tabs">
       <button class="nav-tab active" data-tab="home">Home</button>
       <button class="nav-tab" data-tab="news">News</button>
@@ -43,7 +44,7 @@
           <h2>The Last Airbender</h2>
           <p>Imaginative • Adventure • Epic World</p>
           <div class="hero-actions">
-            <button class="btn btn-primary" onclick="openPlayer('The Last Airbender', '720p', 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4')">▶ Play</button>
+            <button class="btn btn-primary">▶ Play</button>
             <button class="btn btn-secondary" id="add-list-btn">+ My List</button>
           </div>
         </div>
@@ -73,7 +74,7 @@
         <p>Get community-driven updates on upcoming releases.</p>
       </div>
       <div class="news-list" id="news-container">
-        <!-- Dynamically populated -->
+        <!-- Dynamically populated via JS -->
       </div>
     </main>
 
@@ -160,23 +161,23 @@
       <div class="profile-menu">
         <div class="profile-menu-item">
           <span>My Uploads Count</span>
-          <span class="badge-count" id="upload-count">2</span>
+          <span class="badge-count" id="upload-count">0</span>
         </div>
         <div class="profile-menu-item">
-          <span>Hacked/Downloaded Local Storage</span>
+          <span>Local Sync Storage</span>
           <span class="badge-count">14.2 GB Used</span>
         </div>
       </div>
 
       <section class="movie-section">
-        <h3>My List</h3>
+        <h3>My Watch List</h3>
         <div class="movie-grid" id="my-list-container">
           <!-- Dynamically Added Items go here -->
         </div>
       </section>
     </main>
 
-    <!-- ================= MODAL: STREAMING VIDEO PLAYER & TORRENT PORT ================= -->
+    <!-- ================= MODAL: STREAMING VIDEO PLAYER ================= -->
     <div id="video-modal" class="modal">
       <div class="modal-content">
         <span class="close-modal" id="close-modal-btn">&times;</span>
@@ -216,7 +217,6 @@
 
   </div>
 
-  <!-- THIS WAS THE MISSING LINK! -->
   <script src="app.js" defer></script>
 </body>
 </html>
