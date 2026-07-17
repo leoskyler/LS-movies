@@ -500,3 +500,70 @@ video {
 }
 input:checked + .slider { background-color: var(--neon-color); }
 input:checked + .slider:before { transform: translateX(18px); }
+
+/* ================= CINEMATIC NETFLIX INTRO SPLASH ================= */
+#splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999; /* Ensures it sits above everything on load */
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  overflow: hidden;
+}
+
+/* Container to keep text scale locked to center */
+.splash-logo-container {
+  perspective: 1000px;
+}
+
+.splash-logo {
+  color: #e50914; /* True Netflix Red */
+  font-size: 32px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 12px rgba(229, 9, 20, 0.6), 0 0 30px rgba(229, 9, 20, 0.2);
+  transform: scale(0.5);
+  opacity: 0;
+  
+  /* Curve effect using a slight warp */
+  display: inline-block;
+  transform-style: preserve-3d;
+  
+  /* Runs the dramatic 2.8-second intro sequence */
+  animation: netflixIntro 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes netflixIntro {
+  0% {
+    transform: scale(0.6) rotateX(10deg);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  20% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  80% {
+    transform: scale(1.15) rotateX(0deg);
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    transform: scale(3.5);
+    opacity: 0;
+    filter: blur(15px);
+  }
+}
+
+/* Smoothly dissolves the splash screen once done */
+#splash-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
