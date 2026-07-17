@@ -2,67 +2,206 @@
 // 1. PREMIUM PUBLIC DIRECT STREAM DIRECTORY
 // ==========================================
 const MOVIE_DATABASE = [
-  {
-    id: "m1",
-    title: "Tears of Steel",
-    type: "movies",
-    tags: ["Trending", "Movies"],
-    genre: "Sci-Fi • Cyberpunk",
-    quality: "1080p",
-    poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop",
-    streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-    magnet: "magnet:?xt=urn:btih:2b2b1a8dcf8c79cb8e9f2eeea4bb22f872c67bd2",
-    description: "A group of scientists in dystopian Amsterdam try to rescue the world from destructive, rogue giant robots."
-  },
-  {
-    id: "m2",
-    title: "Sintel",
-    type: "movies",
-    tags: ["Trending", "Movies"],
-    genre: "Fantasy • Adventure",
-    quality: "1080p",
-    poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop", 
-    streamUrl: "https://archive.org/download/Sintel/sintel-2048-surround.mp4",
-    magnet: "magnet:?xt=urn:btih:08ada5a7a6183aae1e8d838df40db54a",
-    description: "A young woman named Sintel searches desperately for her baby dragon, Scales, in an expansive fantasy world."
-  },
-  {
-    id: "m3",
-    title: "Big Buck Bunny",
-    type: "anime",
-    tags: ["Trending", "Anime"],
-    genre: "Comedy • Animation",
-    quality: "720p",
-    poster: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=600&auto=format&fit=crop",
-    streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    magnet: "magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c",
-    description: "A giant, friendly rabbit decides to take sweet, calculated revenge on three bullying forest rodents."
-  },
-  {
-    id: "m4",
-    title: "Cosmos Laundromat",
-    type: "movies",
-    tags: ["Trending", "Movies"],
-    genre: "Surreal • Sci-Fi",
-    quality: "1080p",
-    poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop",
-    streamUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Cosmos_Laundromat_-_First_Cycle_-_Official_Blender_Foundation_release.webm",
-    magnet: "magnet:?xt=urn:btih:9c3330fca6dbbb80b271cb46fb2627e7f62b2577",
-    description: " Franck meets a quirky salesman who offers him the deal of a lifetime."
-  },
-  {
-    id: "m5",
-    title: "Elephants Dream",
-    type: "tv-series",
-    tags: ["TV Series"],
-    genre: "Sci-Fi • Surreal",
-    quality: "1080p",
-    poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop",
-    streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    magnet: "magnet:?xt=urn:btih:8c909e390c58a6ee5d0d829bf40db54a",
-    description: "Two characters explore a strange, mechanical world that represents their own psychological states."
-  }
+    {
+        id: "sintel",
+        title: "Sintel",
+        year: 2010,
+        category: "Animation",
+        duration: "14:48",
+        description: "A beautiful, open-source fantasy animation by the Blender Foundation. It follows a lone warrior named Sintel as she searches for her companion dragon baby.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/8/8f/Sintel_poster.jpg",
+        streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+        magnetLink: "magnet:?xt=urn:btih:3e78f30b91f03d528ef3c99a84b9015c7e96b797&dn=Sintel"
+    },
+    {
+        id: "tears-of-steel",
+        title: "Tears of Steel",
+        year: 2012,
+        category: "Sci-Fi",
+        duration: "12:14",
+        description: "Set in a dystopian future Amsterdam, a group of scientists try to save the world from destructive giant robots using a cybernetic device.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Tears_of_Steel_poster.jpg",
+        streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+        magnetLink: "magnet:?xt=urn:btih:8ef3a771e8f2371cb21ffef3759a224a14a382be&dn=Tears+of+Steel"
+    },
+    {
+        id: "night-of-living-dead",
+        title: "Night of the Living Dead",
+        year: 1968,
+        category: "Horror",
+        duration: "1h 36m",
+        description: "The absolute godfather of modern zombie horror directed by George A. Romero. A mismatched group of survivors barricade themselves in an abandoned farmhouse to escape flesh-eating ghouls.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/1/18/Night_of_the_Living_Dead_theatrical_poster.jpg",
+        streamUrl: "https://archive.org/download/Night_of_the_Living_Dead_AVI/Night_of_the_Living_Dead_512kb.mp4",
+        magnetLink: "magnet:?xt=urn:btih:51c31872df8849b294318c50b6910a514d7a16db&dn=Night+of+the+Living+Dead"
+    },
+    {
+        id: "charade",
+        title: "Charade",
+        year: 1963,
+        category: "Mystery",
+        duration: "1h 53m",
+        description: "Commonly called 'the best Hitchcock movie Hitchcock never made'. A romantic thriller starring Audrey Hepburn and Cary Grant, full of double-crosses, humor, and suspense in Paris.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/e/ed/Charade_1963_poster.jpg",
+        streamUrl: "https://archive.org/download/Charade_1963_512kb/Charade_1963_512kb.mp4",
+        magnetLink: "magnet:?xt=urn:btih:a30f1e8e50bc5fe8a82cf513bc037f68c34f40f0&dn=Charade"
+    },
+    {
+        id: "trip-to-the-moon",
+        title: "A Trip to the Moon (Le Voyage dans la Lune)",
+        year: 1902,
+        category: "Sci-Fi",
+        duration: "12:52",
+        description: "The legendary silent film masterpiece by Georges Méliès. It features the famous iconic shot of the rocket landing squarely in the eye of the Man in the Moon.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/0/04/Le_Voyage_dans_la_lune.jpg",
+        streamUrl: "https://archive.org/download/GeorgeMeliesATripToTheMoon1902/A_Trip_To_The_Moon_512kb.mp4",
+        magnetLink: ""
+    },
+    {
+        id: "phantom-opera",
+        title: "The Phantom of the Opera",
+        year: 1925,
+        category: "Classic",
+        duration: "1h 33m",
+        description: "The chilling silent movie adaptation of Gaston Leroux's novel. Lon Chaney stars as the disfigured Phantom who haunts the Paris Opera House.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/0/0a/Poster_-_Phantom_of_the_Opera_%281925%29_02.jpg",
+        streamUrl: "https://archive.org/download/ThePhantomOfTheOpera1925_201904/The%20Phantom%20of%20the%20Opera%20%281925%29.mp4",
+        magnetLink: ""
+    },
+    {
+        id: "house-haunted-hill",
+        title: "House on Haunted Hill",
+        year: 1959,
+        category: "Horror",
+        duration: "1h 15m",
+        description: "An eccentric millionaire offers five strangers $10,000 each if they can survive a night locked inside a spooky, ghost-filled mansion with his bitter wife.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/2/23/House_on_Haunted_Hill_1959_poster.jpg",
+        streamUrl: "https://archive.org/download/HouseOnHauntedHill1959/House-On-Haunted-Hill.mp4",
+        magnetLink: "magnet:?xt=urn:btih:6274c995ef04d55ea9d79907f9ea1db91880521e&dn=House+on+Haunted+Hill"
+    },
+    {
+        id: "gullivers-travels",
+        title: "Gulliver's Travels",
+        year: 1939,
+        category: "Animation",
+        duration: "1h 16m",
+        description: "The beautiful, historic Technicolor animated feature film by Fleischer Studios, following Lemuel Gulliver's legendary shipwreck on the island of Lilliput.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Gulliver%27s_Travels_1939_poster.jpg",
+        streamUrl: "https://archive.org/download/gullivers-travels-1939_202205/Gulliver%27s%20Travels%20%281939%29.mp4",
+        magnetLink: "magnet:?xt=urn:btih:c522f64fa838497ec0be0e527f31be4db8a1923e&dn=Gullivers+Travels"
+    },
+    {
+        id: "his-girl-friday",
+        title: "His Girl Friday",
+        year: 1940,
+        category: "Comedy",
+        duration: "1h 32m",
+        description: "A fast-talking newspaper editor uses every trick in the book to keep his ex-wife and ace reporter from marrying another man and leaving her career behind.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/5/5a/His_Girl_Friday_1940_poster.jpg",
+        streamUrl: "https://archive.org/download/his_girl_friday_1940/his_girl_friday_1940_512kb.mp4",
+        magnetLink: "magnet:?xt=urn:btih:3fa8e7343e06fa53cfa39b4b9b9a67448d3db8ba&dn=His+Girl+Friday"
+    },
+    {
+        id: "nosferatu",
+        title: "Nosferatu",
+        year: 1922,
+        category: "Horror",
+        duration: "1h 34m",
+        description: "The legendary, unauthorized German Expressionist silent vampire masterpiece. Count Orlok travels to Germany, bringing death and a plague in his wake.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/a/aa/Nosferatu_1922_theatrical_poster.jpg",
+        streamUrl: "https://archive.org/download/nosferatushortversion/nosferatu_512kb.mp4",
+        magnetLink: ""
+    },
+    {
+        id: "big-buck-bunny",
+        title: "Big Buck Bunny",
+        year: 2008,
+        category: "Animation",
+        duration: "9:56",
+        description: "A giant, gentle forest rabbit decides to get comical revenge on a gang of bullies—three mischievous rodents—who ruined his peaceful morning.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Big_Buck_Bunny_Poster.jpg",
+        streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        magnetLink: "magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+Buck+Bunny"
+    },
+    {
+        id: "sherlock-junior",
+        title: "Sherlock Jr.",
+        year: 1924,
+        category: "Comedy",
+        duration: "44:48",
+        description: "Buster Keaton stars as a movie projectionist who dreams of being a grand detective. He literally falls asleep and steps into the movie screen to solve a crime.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Sherlock_Jr_Poster_02.jpg",
+        streamUrl: "https://archive.org/download/SherlockJr1924/Sherlock%20Jr%20%281924%29.mp4",
+        magnetLink: ""
+    },
+    {
+        id: "metropolis",
+        title: "Metropolis",
+        year: 1927,
+        category: "Sci-Fi",
+        duration: "2h 33m",
+        description: "Fritz Lang's pioneering silent sci-fi masterpiece. Set in a futuristic city split between wealthy industrialists and oppressed workers, it introduces the iconic cinematic robot, the 'Maschinenmensch'.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/9/97/Metropolis_poster_back.jpg",
+        streamUrl: "https://archive.org/download/Metropolis1927_201903/Metropolis.mp4",
+        magnetLink: ""
+    },
+    {
+        id: "detour",
+        title: "Detour",
+        year: 1945,
+        category: "Mystery",
+        duration: "1h 07m",
+        description: "A grit-and-shadow masterpiece of zero-budget Film Noir. A hitchhiker's life spirals into an inescapable nightmare after he accidentally takes the identity of a dead man.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/b/be/Detour_%281945%29_poster.jpg",
+        streamUrl: "https://archive.org/download/detour_1945/detour_1945.mp4",
+        magnetLink: "magnet:?xt=urn:btih:e585f4007886df2fa6bf0fca02d13b3d17911b33&dn=Detour"
+    },
+    {
+        id: "the-general",
+        title: "The General",
+        year: 1926,
+        category: "Comedy",
+        duration: "1h 18m",
+        description: "Buster Keaton’s masterpiece of silent cinema. A brave locomotive engineer is rejected by the army, but single-handedly chases after Union spies who stole his beloved train.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/b/b3/The_General_%281926_film_poster%29.jpg",
+        streamUrl: "https://archive.org/download/TheGeneralBusterKeaton/TheGeneral_512kb.mp4",
+        magnetLink: ""
+    },
+    {
+        id: "cabinet-caligari",
+        title: "The Cabinet of Dr. Caligari",
+        year: 1920,
+        category: "Horror",
+        duration: "1h 17m",
+        description: "The definitive landmark of German Expressionist cinema. A crazed hypnotist uses a brainwashed sleepwalker to commit grisly, nighttime murders.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/1/14/Das_Cabinet_des_Dr_Caligari_poster.jpg",
+        streamUrl: "https://archive.org/download/TheCabinetOfDr.Caligari1920/Caligari_512kb.mp4",
+        magnetLink: ""
+    },
+    {
+        id: "cosmic-laundromat",
+        title: "Cosmos Laundromat",
+        year: 2015,
+        category: "Animation",
+        duration: "12:03",
+        description: "An absurdly creative open-source short film by the Blender Foundation. On a desolate island, a suicidal sheep meets a quirky salesman who offers him the ride of his life.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Cosmos_Laundromat_poster.jpg",
+        streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+        magnetLink: "magnet:?xt=urn:btih:7c66d8e20258169ff55bf689e4722513f59223e7&dn=Cosmos+Laundromat"
+    },
+    {
+        id: "carnival-of-souls",
+        title: "Carnival of Souls",
+        year: 1962,
+        category: "Horror",
+        duration: "1h 18m",
+        description: "After a drag-racing accident plunges her car off a bridge, a church organist finds herself drawn to a mysterious, deserted lakeside pavilion haunted by ghoulish figures.",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/8/87/Carnival_of_Souls_theatrical_release_poster.jpg",
+        streamUrl: "https://archive.org/download/CarnivalOfSouls_805/CarnivalOfSouls.mp4",
+        magnetLink: "magnet:?xt=urn:btih:571d49f056ecbc865d4d38ca58374fb91e0a8ff2&dn=Carnival+of+Souls"
+    }
 ];
+
 
 // ==========================================
 // 2. LEGITIMATE GEEK & CINEMA NEWS ARTICLES
@@ -85,8 +224,45 @@ const NEWS_DATABASE = [
     link: "https://www.webmproject.org/",
     image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop",
     body: "As video portals push toward high-efficiency 4K web pipelines, WebM containers are taking over native browser players, letting designers stream cinematic files without licensing fees."
+  },
+  {
+    id: "n3",
+    title: "How Multi-CDN Architectures and Edge Caching Power Next-Gen Web Players",
+    author: "♣︎leoskyler♣︎",
+    source: "CDN Networks",
+    link: "https://www.cdnetworks.com/blog/media-delivery/streaming-trends/",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=600&auto=format&fit=crop",
+    body: "With global web traffic hitting record highs, custom video portals are abandoning single-source hosting. Developers are utilizing multi-CDN routing and edge compute caching to serve raw MP4 streams under 500ms worldwide."
+  },
+  {
+    id: "n4",
+    title: "Metadata Standardization: The Secret Weapon for Monetizing Deep Web Catalogs",
+    author: "♣︎leoskyler♣︎",
+    source: "Streaming Tech Group",
+    link: "https://www.wordbank.com/blog/global-trends/10-trends-shaping-streaming-and-entertainment-in-2026/",
+    image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=600&auto=format&fit=crop",
+    body: "Acquiring massive indie and public-domain film catalogs is only half the battle. Engineers are leveraging standardized, search-optimized JSON database arrays to dynamically populate and monetize on-demand web players."
+  },
+  {
+    id: "n5",
+    title: "The Rise of Open-Source Creative Pipelines in Generative Web Video Production",
+    author: "♣︎leoskyler♣︎",
+    source: "Trends Digital",
+    link: "https://www.trendsdigital.com/post/entertainment-trends-2026",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
+    body: "Generative video frameworks are transitioning from niche novelties into standard infrastructure. The democratization of high-fidelity open rendering pipelines allows self-hosted web platforms to build interactive media hubs."
+  },
+  {
+    id: "n6",
+    title: "Hybrid Monetization Takes Over Web Streaming as AVOD and FAST Matures",
+    author: "♣︎leoskyler♣︎",
+    source: "Avenga Tech",
+    link: "https://www.avenga.com/magazine/trends-in-the-media-and-entertainment-industry/",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop",
+    body: "The landscape is shifting away from strict subscription paywalls. Independent platforms are turning toward custom, ad-supported free streaming architectures (FAST) to captivate audiences and diversify web revenues."
   }
 ];
+
 
 // LocalStorage Sync Keys
 if (!localStorage.getItem("movies")) localStorage.setItem("movies", JSON.stringify(MOVIE_DATABASE));
