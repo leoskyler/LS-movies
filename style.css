@@ -1,8 +1,8 @@
 :root {
   --app-bg: #000000;
   --card-bg: #121212;
-  --accent-color: #e50914; /* Red core accent for native movie streaming vibe */
-  --neon-color: #00f3ff;   /* Cyber Club core details */
+  --accent-color: #e50914; 
+  --neon-color: #00f3ff;   
   --text-primary: #ffffff;
   --text-secondary: #999999;
   --border-color: #222222;
@@ -16,6 +16,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  margin: 0;
 }
 
 .app-container {
@@ -42,7 +43,6 @@ body {
   font-size: 20px;
   font-weight: 800;
   color: var(--text-primary);
-  text-shadow: 0 0 8px rgba(255,255,255,0.2);
 }
 .header-right {
   display: flex;
@@ -76,7 +76,7 @@ body {
   font-size: 14px;
 }
 
-/* Navigation Tabs Header */
+/* Tabs */
 .navigation-tabs {
   display: flex;
   background-color: #080808;
@@ -101,7 +101,7 @@ body {
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
-/* Tab Switching Logic */
+/* Tab Switching */
 .tab-content {
   display: none;
   padding: 16px;
@@ -189,7 +189,7 @@ body {
   color: #000;
 }
 
-/* Movie List Row */
+/* Grid layout with covers */
 .movie-section h3 {
   font-size: 18px;
   margin-bottom: 12px;
@@ -206,73 +206,35 @@ body {
   cursor: pointer;
   border: 1px solid var(--border-color);
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
 }
 .movie-card:hover {
   transform: translateY(-4px);
 }
-.movie-poster {
-  height: 190px;
-  background-size: cover;
-  background-position: center;
-  position: relative;
+.movie-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
 }
-.quality-tag {
-  position: absolute;
-  top: 8px; left: 8px;
-  background-color: var(--accent-color);
-  font-size: 9px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: bold;
-}
-.movie-info {
+.movie-card-info {
   padding: 10px;
 }
-.movie-info h4 {
+.movie-card-info h4 {
   font-size: 13px;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin: 0 0 4px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.movie-info p {
+.movie-card-info span {
   font-size: 11px;
   color: var(--text-secondary);
 }
 
-/* News List */
-.news-item {
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 16px;
-  border: 1px solid var(--border-color);
-}
-.news-image {
-  height: 150px;
-  background-size: cover;
-  background-position: center;
-}
-.news-content {
-  padding: 16px;
-}
-.news-meta {
-  font-size: 10px;
-  color: var(--neon-color);
-  margin-bottom: 6px;
-}
-.news-content h3 {
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-.news-content p {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-/* Creator Portal/Upload Panel */
+/* Upload Forms Panel */
 .upload-panel {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -338,7 +300,7 @@ input:focus, select:focus, textarea:focus {
   border-color: var(--neon-color);
 }
 
-/* Me / Profile Section */
+/* Profile styles */
 .profile-header {
   display: flex;
   flex-direction: column;
@@ -381,15 +343,18 @@ input:focus, select:focus, textarea:focus {
   font-weight: bold;
 }
 
-/* Modal Windows (Video streaming simulation) */
+/* Modal Engine Window */
 .modal {
   display: none;
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   background-color: rgba(0,0,0,0.9);
-  z-index: 100;
+  z-index: 100000;
   justify-content: center;
   align-items: center;
+}
+.modal.active-modal {
+  display: flex !important;
 }
 .modal-content {
   background-color: #0a0a0a;
@@ -482,25 +447,6 @@ video {
   font-weight: bold;
 }
 
-/* Switch Styles */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 22px;
-}
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider {
-  position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #333; transition: .3s; border-radius: 20px;
-}
-.slider:before {
-  position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px;
-  background-color: white; transition: .3s; border-radius: 50%;
-}
-input:checked + .slider { background-color: var(--neon-color); }
-input:checked + .slider:before { transform: translateX(18px); }
-
 /* ================= CINEMATIC NETFLIX INTRO SPLASH ================= */
 #splash-screen {
   position: fixed;
@@ -512,18 +458,17 @@ input:checked + .slider:before { transform: translateX(18px); }
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999999; /* Ensures it sits above everything on load */
+  z-index: 999999; 
   transition: opacity 0.6s ease, visibility 0.6s ease;
   overflow: hidden;
 }
 
-/* Container to keep text scale locked to center */
 .splash-logo-container {
   perspective: 1000px;
 }
 
 .splash-logo {
-  color: #e50914; /* True Netflix Red */
+  color: #e50914; 
   font-size: 32px;
   font-weight: 900;
   text-transform: uppercase;
@@ -531,12 +476,8 @@ input:checked + .slider:before { transform: translateX(18px); }
   text-shadow: 0 0 12px rgba(229, 9, 20, 0.6), 0 0 30px rgba(229, 9, 20, 0.2);
   transform: scale(0.5);
   opacity: 0;
-  
-  /* Curve effect using a slight warp */
   display: inline-block;
   transform-style: preserve-3d;
-  
-  /* Runs the dramatic 2.8-second intro sequence */
   animation: netflixIntro 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
@@ -562,7 +503,6 @@ input:checked + .slider:before { transform: translateX(18px); }
   }
 }
 
-/* Smoothly dissolves the splash screen once done */
 #splash-screen.fade-out {
   opacity: 0;
   visibility: hidden;
