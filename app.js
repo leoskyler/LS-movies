@@ -48,7 +48,7 @@ const MOVIE_DATABASE = [
     poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop",
     streamUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Cosmos_Laundromat_-_First_Cycle_-_Official_Blender_Foundation_release.webm",
     magnet: "magnet:?xt=urn:btih:9c3330fca6dbbb80b271cb46fb2627e7f62b2577",
-    description: "On a desolate island, a depressed sheep named Franck meets a quirky salesman who offers him the deal of a lifetime."
+    description: " Franck meets a quirky salesman who offers him the deal of a lifetime."
   }
 ];
 
@@ -88,9 +88,18 @@ if (!localStorage.getItem("mylist")) {
 }
 
 // ==========================================
-// 3. CORE NAVIGATION ENGINE & ADMIN HOOKS
+// 3. APP INITIALIZATION & TIMINGS
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
+  // 1. Trigger Netflix-style splash screen dismissal
+  setTimeout(() => {
+    const splash = document.getElementById("splash-screen");
+    if (splash) {
+      splash.classList.add("fade-out");
+    }
+  }, 2800); 
+
+  // Initialize all sections
   initNavigation();
   renderMovies();
   renderNews();
@@ -101,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initNavigation() {
   const tabs = document.querySelectorAll(".nav-tab");
-  const contents = document.querySelectorAll(".tab-content");
 
   // Main Nav Switching
   tabs.forEach(tab => {
@@ -183,7 +191,7 @@ function renderMovies(filter = "trending") {
   });
 
   if (filtered.length === 0) {
-    container.innerHTML = `<p class="empty-msg">No media entries found in this index category.</p>`;
+    container.innerHTML = `<p class="empty-msg" style="grid-column: 1/-1; text-align: center; color: #666; margin-top: 20px;">No media entries found in this category.</p>`;
     return;
   }
 
@@ -242,7 +250,7 @@ function renderMyList() {
   if (countBadge) countBadge.textContent = mylist.length;
 
   if (mylist.length === 0) {
-    container.innerHTML = `<p class="empty-msg" style="color:#666; font-size:13px;">Your watch list is empty. Find a movie and click "+ My List" to bookmark it!</p>`;
+    container.innerHTML = `<p class="empty-msg" style="color:#666; font-size:13px; grid-column: 1/-1;">Your watch list is empty.</p>`;
     return;
   }
 
@@ -257,12 +265,10 @@ function renderMyList() {
       </div>
     `;
     
-    // Play on Card Click
     card.querySelector("img").addEventListener("click", () => {
       openPlayer(movie);
     });
 
-    // Remove Action Button
     card.querySelector(".remove-list-btn").addEventListener("click", (e) => {
       e.stopPropagation();
       removeFromList(movie.id);
@@ -284,7 +290,7 @@ function addCurrentToList(movie) {
   mylist.push(movie);
   localStorage.setItem("mylist", JSON.stringify(mylist));
   renderMyList();
-  alert(`Added "${movie.title}" to your list successfully.`);
+  alert(`Added "${movie.title}" to your list.`);
 }
 
 function removeFromList(id) {
@@ -319,7 +325,6 @@ function initUploadForms() {
     });
   }
 
-  // Movie Upload Submission Handler
   if (formMovie) {
     formMovie.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -348,7 +353,6 @@ function initUploadForms() {
     });
   }
 
-  // News Upload Submission Handler
   if (formNews) {
     formNews.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -389,12 +393,10 @@ function initPlayerModal() {
   const torrentFill = document.getElementById("torrent-fill");
   const torrentStatus = document.getElementById("torrent-status");
 
-  // Hero Static Main Play Action Wrapper
   const heroPlayBtn = document.querySelector(".hero-actions .btn-primary");
   if (heroPlayBtn) {
     heroPlayBtn.removeAttribute("onclick");
     heroPlayBtn.addEventListener("click", () => {
-      // Stream Sintel as Featured Movie
       const sintel = JSON.parse(localStorage.getItem("movies")).find(m => m.id === "m1");
       if (sintel) openPlayer(sintel);
     });
@@ -413,7 +415,6 @@ function initPlayerModal() {
     });
   }
 
-  // Resolution Switches Inside Player
   const resBtns = document.querySelectorAll(".res-btn");
   resBtns.forEach(btn => {
     btn.addEventListener("click", () => {
@@ -424,7 +425,6 @@ function initPlayerModal() {
     });
   });
 
-  // Simulator for Magnet Seed Downloads
   if (torrentBtn) {
     torrentBtn.addEventListener("click", () => {
       if (!activeMovie) return;
@@ -457,17 +457,13 @@ function openPlayer(movie) {
   if (!modal || !video) return;
 
   title.textContent = movie.title;
-  
-  // Set stream direct video file source
   video.src = movie.streamUrl;
   video.load();
   video.play().catch(e => {
     console.log("Auto-play blocked by browser. User interaction required.");
   });
 
-  // Reset Torrent Panel
   document.getElementById("torrent-progress-container").style.display = "none";
-
   modal.classList.add("active-modal");
 }
 
