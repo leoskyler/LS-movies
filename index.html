@@ -15,14 +15,14 @@
     </div>
   </div>
 
-  <!-- Main Container -->
+  <!-- Main Application Container -->
   <div class="app-container">
     
     <!-- Top Brand Header -->
     <header class="app-header">
       <div class="logo">♣︎leoskyler♣︎movies</div>
       <div class="header-right">
-        <span class="bell-icon" id="notif-btn">🔔<span class="badge">3</span></span>
+        <span class="bell-icon" id="notif-btn">🔔<span class="badge">4</span></span>
         <div class="user-avatar" id="avatar-btn">L</div>
       </div>
     </header>
@@ -37,30 +37,41 @@
 
     <!-- ================= TAB CONTENT: HOME ================= -->
     <main id="tab-home" class="tab-content active-content">
-      <!-- Hero Spot Banner (Dynamic Active Movie) -->
-      <div class="hero-banner" style="background-image: linear-gradient(to top, #000, rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1025&auto=format&fit=crop');">
+      
+      <!-- Premium Movie Search Bar -->
+      <div class="search-section">
+        <div class="search-bar-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="movie-search-input" placeholder="Search by title, genre, or keyword...">
+          <button id="clear-search-btn" class="clear-btn">&times;</button>
+        </div>
+      </div>
+
+      <!-- Hero Spot Banner (Dynamic Active Movie Showcase) -->
+      <div class="hero-banner" id="featured-hero-banner" style="background-image: linear-gradient(to top, #000 10%, rgba(0,0,0,0.1) 80%), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1000&auto=format&fit=crop');">
         <div class="hero-content">
-          <span class="trending-badge">♣︎ EXCLUSIVE PREMIERE</span>
-          <h2>The Last Airbender</h2>
-          <p>Imaginative • Adventure • Epic World</p>
+          <span class="trending-badge">🎬 FEATURED SELECTION</span>
+          <h2 id="hero-movie-title">Tears of Steel</h2>
+          <p id="hero-movie-meta">Sci-Fi • Cyberpunk • 1080p</p>
           <div class="hero-actions">
-            <button class="btn btn-primary">▶ Play</button>
-            <button class="btn btn-secondary" id="add-list-btn">+ My List</button>
+            <button class="btn btn-primary" id="hero-play-btn">▶ Play Stream</button>
+            <button class="btn btn-secondary" id="hero-add-list-btn">+ My List</button>
           </div>
         </div>
       </div>
 
       <!-- Category Filter Pills -->
-      <div class="category-pills">
-        <span class="pill active">Trending</span>
-        <span class="pill">Movies</span>
-        <span class="pill">TV Series</span>
-        <span class="pill">Anime</span>
+      <div class="category-pills" id="pills-container">
+        <span class="pill active" data-filter="all">All Media</span>
+        <span class="pill" data-filter="trending">Trending</span>
+        <span class="pill" data-filter="movies">Movies</span>
+        <span class="pill" data-filter="tv-series">TV Series</span>
+        <span class="pill" data-filter="anime">Anime</span>
       </div>
 
       <!-- Custom Dynamic Movies Grid -->
       <section class="movie-section">
-        <h3>We Think You'll Love These</h3>
+        <h3 id="grid-header-title">Browse Catalog</h3>
         <div class="movie-grid" id="movies-container">
           <!-- Populated dynamically via JS -->
         </div>
@@ -95,43 +106,50 @@
         <form id="movie-upload-form" class="active-form">
           <div class="form-group">
             <label>Movie Title</label>
-            <input type="text" id="mv-title" placeholder="e.g. Deadpool & Wolverine" required>
+            <input type="text" id="mv-title" placeholder="e.g. Sintel" required>
           </div>
           <div class="form-group">
             <label>Poster Image URL</label>
             <input type="url" id="mv-poster" placeholder="https://example.com/poster.jpg" required>
           </div>
           <div class="form-group">
-            <label>Video File URL (Direct stream link)</label>
+            <label>Video Stream URL (Direct stream .mp4 link)</label>
             <input type="url" id="mv-stream" placeholder="https://example.com/stream.mp4" required>
           </div>
           <div class="form-group">
-            <label>Torrent Magnet Link (For background downloading)</label>
+            <label>Torrent Magnet Link (Alternative Option)</label>
             <input type="text" id="mv-magnet" placeholder="magnet:?xt=urn:btih:..." required>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Initial Quality</label>
+              <label>Resolution</label>
               <select id="mv-quality">
                 <option value="1080p">1080p Full HD</option>
                 <option value="720p">720p HD</option>
                 <option value="480p">480p SD</option>
-                <option value="360p">360p Low</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Genre</label>
-              <input type="text" id="mv-genre" placeholder="e.g. Action / Comedy" required>
+              <label>Genre & Tags</label>
+              <input type="text" id="mv-genre" placeholder="e.g. Fantasy • Adventure" required>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary btn-full">Publish to Network Feed</button>
+          <div class="form-group">
+            <label>Category Placement</label>
+            <select id="mv-type">
+              <option value="movies">Movies</option>
+              <option value="tv-series">TV Series</option>
+              <option value="anime">Anime</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Publish to Movie Catalog</button>
         </form>
 
         <!-- News Form -->
         <form id="news-upload-form">
           <div class="form-group">
             <label>Article Title</label>
-            <input type="text" id="news-title" placeholder="e.g. Suits LA Spinoff Confirmed!" required>
+            <input type="text" id="news-title" placeholder="e.g. New Anime Release Confirmed!" required>
           </div>
           <div class="form-group">
             <label>Author Label</label>
@@ -139,13 +157,13 @@
           </div>
           <div class="form-group">
             <label>Featured Image URL</label>
-            <input type="url" id="news-image" placeholder="https://example.com/news-banner.jpg" required>
+            <input type="url" id="news-image" placeholder="https://example.com/news.jpg" required>
           </div>
           <div class="form-group">
             <label>Article Body Content</label>
-            <textarea id="news-body" rows="6" placeholder="Write the movie scoop here..." required></textarea>
+            <textarea id="news-body" rows="6" placeholder="Write news update detail here..." required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary btn-full">Submit for Immediate Publication</button>
+          <button type="submit" class="btn btn-primary btn-full">Publish News Article</button>
         </form>
       </div>
     </main>
@@ -160,56 +178,63 @@
 
       <div class="profile-menu">
         <div class="profile-menu-item">
-          <span>My Uploads Count</span>
+          <span>Personal Bookmark Library</span>
           <span class="badge-count" id="upload-count">0</span>
         </div>
         <div class="profile-menu-item">
-          <span>Local Sync Storage</span>
-          <span class="badge-count">14.2 GB Used</span>
+          <span>Local Encrypted Space</span>
+          <span class="badge-count">Device LocalStorage Active</span>
         </div>
       </div>
 
       <section class="movie-section">
-        <h3>My Watch List</h3>
+        <h3>My Personal Watch List</h3>
         <div class="movie-grid" id="my-list-container">
-          <!-- Dynamically Added Items go here -->
+          <!-- Bookmarked entries go here -->
         </div>
       </section>
     </main>
 
-    <!-- ================= MODAL: STREAMING VIDEO PLAYER ================= -->
+    <!-- ================= MODAL: VIDEO STREAM & DOWNLOAD PLAYER ================= -->
     <div id="video-modal" class="modal">
       <div class="modal-content">
         <span class="close-modal" id="close-modal-btn">&times;</span>
         <h3 id="modal-movie-title">Movie Title</h3>
         
-        <!-- Video Screen Simulation -->
+        <!-- Video Screen Engine -->
         <div class="player-wrapper">
           <video id="main-video" controls poster="">
             <source src="" type="video/mp4">
-            Your browser doesn't support video streaming.
+            Your browser does not support HTML5 video elements.
           </video>
           <div class="video-overlay-quality" id="current-res-indicator">1080P</div>
         </div>
 
         <!-- Controls panel under video -->
         <div class="player-details">
+          
+          <!-- Quality selection -->
           <div class="quality-selector">
             <span>Stream Resolution:</span>
             <div class="res-buttons">
-              <button class="res-btn" data-res="360p">360p</button>
               <button class="res-btn" data-res="480p">480p</button>
-              <button class="res-btn active" data-res="720p">720p</button>
-              <button class="res-btn" data-res="1080p">1080p</button>
+              <button class="res-btn" data-res="720p">720p</button>
+              <button class="res-btn active" data-res="1080p">1080p</button>
             </div>
           </div>
 
-          <div class="torrent-section">
-            <button class="btn btn-secondary" id="torrent-dl-btn">📥 Magnet Link (Torrent Download)</button>
-            <div class="torrent-progress-bar" id="torrent-progress-container">
-              <div class="torrent-progress-fill" id="torrent-fill"></div>
-              <span id="torrent-status">Connecting to Peers...</span>
+          <!-- Dual Mode: Live Streaming Download Engine -->
+          <div class="action-grid-buttons">
+            <button class="btn btn-primary" id="add-to-watchlist-modal-btn">♥ Bookmark Watchlist</button>
+            <button class="btn btn-accent" id="direct-download-btn">📥 Save to Local Storage</button>
+          </div>
+
+          <!-- Real-Time Saving Progress Indicator -->
+          <div class="download-progress-box" id="dl-progress-box">
+            <div class="dl-bar">
+              <div class="dl-bar-fill" id="dl-fill-progress"></div>
             </div>
+            <p id="dl-status-text">Locating safe connection node...</p>
           </div>
         </div>
       </div>
