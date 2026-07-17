@@ -1,9 +1,21 @@
 // ==========================================
-// 1. ORIGINAL MOVIE & MEDIA DATA DIRECTORY
+// 1. PREMIUM PUBLIC DIRECT STREAM DIRECTORY
 // ==========================================
 const MOVIE_DATABASE = [
   {
     id: "m1",
+    title: "Tears of Steel",
+    type: "movies",
+    tags: ["Trending", "Movies"],
+    genre: "Sci-Fi • Cyberpunk",
+    quality: "1080p",
+    poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop",
+    streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+    magnet: "magnet:?xt=urn:btih:2b2b1a8dcf8c79cb8e9f2eeea4bb22f872c67bd2",
+    description: "A group of scientists in dystopian Amsterdam try to rescue the world from destructive, rogue giant robots."
+  },
+  {
+    id: "m2",
     title: "Sintel",
     type: "movies",
     tags: ["Trending", "Movies"],
@@ -15,28 +27,16 @@ const MOVIE_DATABASE = [
     description: "A young woman named Sintel searches desperately for her baby dragon, Scales, in an expansive fantasy world."
   },
   {
-    id: "m2",
+    id: "m3",
     title: "Big Buck Bunny",
     type: "anime",
     tags: ["Trending", "Anime"],
     genre: "Comedy • Animation",
     quality: "720p",
     poster: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=600&auto=format&fit=crop",
-    streamUrl: "https://cdn.jsdelivr.net/npm/big-buck-bunny-1080p@0.0.6/video.mp4",
+    streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
     magnet: "magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c",
     description: "A giant, friendly rabbit decides to take sweet, calculated revenge on three bullying forest rodents."
-  },
-  {
-    id: "m3",
-    title: "Tears of Steel",
-    type: "tv-series",
-    tags: ["Movies", "TV Series"],
-    genre: "Sci-Fi • Cyberpunk",
-    quality: "1080p",
-    poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop",
-    streamUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Tears_of_Steel_in_4k_-_Official_Blender_Foundation_release.webm",
-    magnet: "magnet:?xt=urn:btih:2b2b1a8dcf8c79cb8e9f2eeea4bb22f872c67bd2",
-    description: "A group of scientists in dystopian Amsterdam try to rescue the world from destructive, rogue giant robots."
   },
   {
     id: "m4",
@@ -49,6 +49,18 @@ const MOVIE_DATABASE = [
     streamUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Cosmos_Laundromat_-_First_Cycle_-_Official_Blender_Foundation_release.webm",
     magnet: "magnet:?xt=urn:btih:9c3330fca6dbbb80b271cb46fb2627e7f62b2577",
     description: " Franck meets a quirky salesman who offers him the deal of a lifetime."
+  },
+  {
+    id: "m5",
+    title: "Elephants Dream",
+    type: "tv-series",
+    tags: ["TV Series"],
+    genre: "Sci-Fi • Surreal",
+    quality: "1080p",
+    poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop",
+    streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    magnet: "magnet:?xt=urn:btih:8c909e390c58a6ee5d0d829bf40db54a",
+    description: "Two characters explore a strange, mechanical world that represents their own psychological states."
   }
 ];
 
@@ -76,31 +88,29 @@ const NEWS_DATABASE = [
   }
 ];
 
-// Initialize local storage states
-if (!localStorage.getItem("movies")) {
-  localStorage.setItem("movies", JSON.stringify(MOVIE_DATABASE));
-}
-if (!localStorage.getItem("news")) {
-  localStorage.setItem("news", JSON.stringify(NEWS_DATABASE));
-}
-if (!localStorage.getItem("mylist")) {
-  localStorage.setItem("mylist", JSON.stringify([]));
-}
+// LocalStorage Sync Keys
+if (!localStorage.getItem("movies")) localStorage.setItem("movies", JSON.stringify(MOVIE_DATABASE));
+if (!localStorage.getItem("news")) localStorage.setItem("news", JSON.stringify(NEWS_DATABASE));
+if (!localStorage.getItem("mylist")) localStorage.setItem("mylist", JSON.stringify([]));
+
+let currentFilter = "all";
+let searchQuery = "";
+let activeMovie = null;
 
 // ==========================================
-// 3. APP INITIALIZATION & TIMINGS
+// 3. CORE INITIALIZATION ENGINE
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Trigger Netflix-style splash screen dismissal
+  // Splash Screen Timer
   setTimeout(() => {
     const splash = document.getElementById("splash-screen");
-    if (splash) {
-      splash.classList.add("fade-out");
-    }
-  }, 2800); 
+    if (splash) splash.classList.add("fade-out");
+  }, 2800);
 
-  // Initialize all sections
+  // Load Elements & Dynamic Modules
   initNavigation();
+  initSearch();
+  setupHeroBanner();
   renderMovies();
   renderNews();
   renderMyList();
@@ -108,57 +118,48 @@ document.addEventListener("DOMContentLoaded", () => {
   initPlayerModal();
 });
 
+// ==========================================
+// 4. NAVIGATION INTERFACE (TABS & PILLS)
+// ==========================================
 function initNavigation() {
   const tabs = document.querySelectorAll(".nav-tab");
-
-  // Main Nav Switching
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
-      const targetTab = tab.getAttribute("data-tab");
-      switchTab(targetTab);
+      switchTab(tab.getAttribute("data-tab"));
     });
   });
 
-  // Admin Avatar Click Action -> Switches to ME/Profile
+  // User Profile Avatar Transition Hook
   const avatarBtn = document.getElementById("avatar-btn");
   if (avatarBtn) {
     avatarBtn.style.cursor = "pointer";
-    avatarBtn.addEventListener("click", () => {
-      switchTab("profile");
-    });
+    avatarBtn.addEventListener("click", () => switchTab("profile"));
   }
 
-  // Category Pill Filters
+  // Categories Filter Controller
   const pills = document.querySelectorAll(".category-pills .pill");
   pills.forEach(pill => {
     pill.addEventListener("click", () => {
       pills.forEach(p => p.classList.remove("active"));
       pill.classList.add("active");
-      const category = pill.textContent.trim().toLowerCase();
-      renderMovies(category);
+      currentFilter = pill.getAttribute("data-filter");
+      renderMovies();
     });
   });
 }
 
 function switchTab(targetTab) {
-  // Update Header Tab Highlight
   const tabs = document.querySelectorAll(".nav-tab");
   tabs.forEach(t => {
-    if (t.getAttribute("data-tab") === targetTab) {
-      t.classList.add("active");
-    } else {
-      t.classList.remove("active");
-    }
+    t.classList.toggle("active", t.getAttribute("data-tab") === targetTab);
   });
 
-  // Display targeted Content Panel
   const contents = document.querySelectorAll(".tab-content");
   contents.forEach(content => {
     content.classList.remove("active-content");
   });
 
-  // Map Tab Names to Content Panel IDs
-  let idMap = {
+  const idMap = {
     "home": "tab-home",
     "news": "tab-news",
     "upload": "tab-upload",
@@ -166,32 +167,95 @@ function switchTab(targetTab) {
   };
 
   const activeContent = document.getElementById(idMap[targetTab]);
-  if (activeContent) {
-    activeContent.classList.add("active-content");
+  if (activeContent) activeContent.classList.add("active-content");
+}
+
+// ==========================================
+// 5. SEARCH LOGIC ENGINE
+// ==========================================
+function initSearch() {
+  const searchInput = document.getElementById("movie-search-input");
+  const clearBtn = document.getElementById("clear-search-btn");
+
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value.trim().toLowerCase();
+      clearBtn.style.display = searchQuery ? "block" : "none";
+      renderMovies();
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      searchQuery = "";
+      clearBtn.style.display = "none";
+      renderMovies();
+    });
   }
 }
 
 // ==========================================
-// 4. RENDERING VIEWS & DYNAMIC GRIDS
+// 6. HERO SPOTLIGHT DISPLAY SETUP
 // ==========================================
-function renderMovies(filter = "trending") {
+function setupHeroBanner() {
+  const heroPlayBtn = document.getElementById("hero-play-btn");
+  const heroAddBtn = document.getElementById("hero-add-list-btn");
+  const db = JSON.parse(localStorage.getItem("movies"));
+  
+  // Set first movie (Tears of Steel) as Hero Spotlight banner
+  const featured = db.find(m => m.id === "m1") || db[0];
+  if (!featured) return;
+
+  document.getElementById("hero-movie-title").textContent = featured.title;
+  document.getElementById("hero-movie-meta").textContent = `${featured.genre} • ${featured.quality}`;
+  document.getElementById("featured-hero-banner").style.backgroundImage = `linear-gradient(to top, #000 10%, rgba(0,0,0,0.1) 80%), url('${featured.poster}')`;
+
+  if (heroPlayBtn) {
+    heroPlayBtn.addEventListener("click", () => openPlayer(featured));
+  }
+  if (heroAddBtn) {
+    heroAddBtn.addEventListener("click", () => addCurrentToList(featured));
+  }
+}
+
+// ==========================================
+// 7. CATALOG RENDER ENGINE
+// ==========================================
+function renderMovies() {
   const container = document.getElementById("movies-container");
   if (!container) return;
   container.innerHTML = "";
 
   const movies = JSON.parse(localStorage.getItem("movies"));
 
-  // Apply real categorization engine
-  const filtered = movies.filter(m => {
-    if (filter === "trending") return m.tags.includes("Trending");
-    if (filter === "movies") return m.type === "movies";
-    if (filter === "tv series") return m.type === "tv-series";
-    if (filter === "anime") return m.type === "anime";
-    return true;
+  // Apply Filter Pills & Search Queries 
+  const filtered = movies.filter(movie => {
+    // 1. Filter Check
+    let matchesFilter = true;
+    if (currentFilter === "trending") matchesFilter = movie.tags.includes("Trending");
+    else if (currentFilter === "movies") matchesFilter = movie.type === "movies";
+    else if (currentFilter === "tv-series") matchesFilter = movie.type === "tv-series";
+    else if (currentFilter === "anime") matchesFilter = movie.type === "anime";
+
+    // 2. Search Query check
+    let matchesSearch = true;
+    if (searchQuery) {
+      const matchTitle = movie.title.toLowerCase().includes(searchQuery);
+      const matchGenre = movie.genre.toLowerCase().includes(searchQuery);
+      matchesSearch = matchTitle || matchGenre;
+    }
+
+    return matchesFilter && matchesSearch;
   });
 
+  const headerTitle = document.getElementById("grid-header-title");
+  if (headerTitle) {
+    headerTitle.textContent = searchQuery ? `Search Results: "${searchQuery}"` : "Browse Catalog";
+  }
+
   if (filtered.length === 0) {
-    container.innerHTML = `<p class="empty-msg" style="grid-column: 1/-1; text-align: center; color: #666; margin-top: 20px;">No media entries found in this category.</p>`;
+    container.innerHTML = `<p class="empty-msg" style="grid-column: 1/-1; text-align: center; color: #666; margin-top: 40px; font-size: 14px;">No movies found matching your query.</p>`;
     return;
   }
 
@@ -205,9 +269,7 @@ function renderMovies(filter = "trending") {
         <span>${movie.genre} • ${movie.quality}</span>
       </div>
     `;
-    card.addEventListener("click", () => {
-      openPlayer(movie);
-    });
+    card.addEventListener("click", () => openPlayer(movie));
     container.appendChild(card);
   });
 }
@@ -247,10 +309,10 @@ function renderMyList() {
   container.innerHTML = "";
 
   const mylist = JSON.parse(localStorage.getItem("mylist"));
-  if (countBadge) countBadge.textContent = mylist.length;
+  if (countBadge) countBadge.textContent = mylist.length + " saved";
 
   if (mylist.length === 0) {
-    container.innerHTML = `<p class="empty-msg" style="color:#666; font-size:13px; grid-column: 1/-1;">Your watch list is empty.</p>`;
+    container.innerHTML = `<p class="empty-msg" style="color:#666; font-size:13px; grid-column: 1/-1;">No movies bookmarked in your watchlist.</p>`;
     return;
   }
 
@@ -261,14 +323,11 @@ function renderMyList() {
       <img src="${movie.poster}" alt="${movie.title}">
       <div class="movie-card-info">
         <h4>${movie.title}</h4>
-        <button class="remove-list-btn" style="background:none; border:none; color:#e50914; cursor:pointer; font-size:12px; padding:4px 0;">Remove</button>
+        <button class="remove-list-btn" style="background:none; border:none; color:#e50914; cursor:pointer; font-size:12px; padding:4px 0; font-weight:bold;">Remove</button>
       </div>
     `;
     
-    card.querySelector("img").addEventListener("click", () => {
-      openPlayer(movie);
-    });
-
+    card.querySelector("img").addEventListener("click", () => openPlayer(movie));
     card.querySelector(".remove-list-btn").addEventListener("click", (e) => {
       e.stopPropagation();
       removeFromList(movie.id);
@@ -279,18 +338,18 @@ function renderMyList() {
 }
 
 // ==========================================
-// 5. ACTIONS: ADD / REMOVE FROM LIST
+// 8. ACTIONS: BOOKMARK LIBRARY ACTIONS
 // ==========================================
 function addCurrentToList(movie) {
   let mylist = JSON.parse(localStorage.getItem("mylist"));
   if (mylist.some(item => item.id === movie.id)) {
-    alert(`"${movie.title}" is already in your collection!`);
+    alert(`"${movie.title}" is already in your watchlist!`);
     return;
   }
   mylist.push(movie);
   localStorage.setItem("mylist", JSON.stringify(mylist));
   renderMyList();
-  alert(`Added "${movie.title}" to your list.`);
+  alert(`"${movie.title}" added to your bookmark list.`);
 }
 
 function removeFromList(id) {
@@ -301,7 +360,7 @@ function removeFromList(id) {
 }
 
 // ==========================================
-// 6. FORM REGISTRATION INTERFACE
+// 9. NEW DATABASE ENTRIES SUBMISSIONS
 // ==========================================
 function initUploadForms() {
   const btnMovie = document.getElementById("btn-upload-movie");
@@ -332,14 +391,14 @@ function initUploadForms() {
       const newMovie = {
         id: "custom_" + Date.now(),
         title: document.getElementById("mv-title").value,
-        type: "movies",
+        type: document.getElementById("mv-type").value,
         tags: ["Movies"],
         genre: document.getElementById("mv-genre").value,
         quality: document.getElementById("mv-quality").value,
         poster: document.getElementById("mv-poster").value,
         streamUrl: document.getElementById("mv-stream").value,
         magnet: document.getElementById("mv-magnet").value,
-        description: "Custom user database publication."
+        description: "Custom network stream asset."
       };
 
       const db = JSON.parse(localStorage.getItem("movies"));
@@ -348,7 +407,7 @@ function initUploadForms() {
 
       formMovie.reset();
       renderMovies();
-      alert("Success! Custom movie broadcast onto local network database.");
+      alert("Success! Broadcast metadata added to network index.");
       switchTab("home");
     });
   }
@@ -361,7 +420,7 @@ function initUploadForms() {
         id: "news_" + Date.now(),
         title: document.getElementById("news-title").value,
         author: document.getElementById("news-author").value,
-        source: "Independent Publisher",
+        source: "Community Hub",
         link: "https://github.com",
         image: document.getElementById("news-image").value,
         body: document.getElementById("news-body").value
@@ -373,77 +432,125 @@ function initUploadForms() {
 
       formNews.reset();
       renderNews();
-      alert("Published! Article is now live in global feed.");
+      alert("Published! News bulletin is now live on feed.");
       switchTab("news");
     });
   }
 }
 
 // ==========================================
-// 7. CINEMATIC MODAL & STREAMING MEDIA PLAYER
+// 10. MODAL, LIVE STREAM & BLOB DOWNLOAD ENGINE
 // ==========================================
-let activeMovie = null;
-
 function initPlayerModal() {
-  const modal = document.getElementById("video-modal");
   const closeBtn = document.getElementById("close-modal-btn");
-  const addListBtn = document.getElementById("add-list-btn");
-  const torrentBtn = document.getElementById("torrent-dl-btn");
-  const torrentProgress = document.getElementById("torrent-progress-container");
-  const torrentFill = document.getElementById("torrent-fill");
-  const torrentStatus = document.getElementById("torrent-status");
-
-  const heroPlayBtn = document.querySelector(".hero-actions .btn-primary");
-  if (heroPlayBtn) {
-    heroPlayBtn.removeAttribute("onclick");
-    heroPlayBtn.addEventListener("click", () => {
-      const sintel = JSON.parse(localStorage.getItem("movies")).find(m => m.id === "m1");
-      if (sintel) openPlayer(sintel);
-    });
-  }
-
-  if (addListBtn) {
-    addListBtn.addEventListener("click", () => {
-      const sintel = JSON.parse(localStorage.getItem("movies")).find(m => m.id === "m1");
-      if (sintel) addCurrentToList(sintel);
-    });
-  }
+  const modalBookmarkBtn = document.getElementById("add-to-watchlist-modal-btn");
+  const downloadBtn = document.getElementById("direct-download-btn");
 
   if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      closePlayer();
+    closeBtn.addEventListener("click", closePlayer);
+  }
+
+  if (modalBookmarkBtn) {
+    modalBookmarkBtn.addEventListener("click", () => {
+      if (activeMovie) addCurrentToList(activeMovie);
     });
   }
 
+  // Stream Resolution Switcher Interface
   const resBtns = document.querySelectorAll(".res-btn");
   resBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       resBtns.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      const selectedRes = btn.getAttribute("data-res");
-      document.getElementById("current-res-indicator").textContent = selectedRes.toUpperCase();
+      const resVal = btn.getAttribute("data-res");
+      document.getElementById("current-res-indicator").textContent = resVal.toUpperCase();
     });
   });
 
-  if (torrentBtn) {
-    torrentBtn.addEventListener("click", () => {
+  // Direct Binary Blob Saver - Forces Local Storage Download
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", async () => {
       if (!activeMovie) return;
-      torrentProgress.style.display = "block";
-      torrentFill.style.width = "0%";
-      torrentStatus.textContent = "Connecting to P2P Swarm...";
       
-      let width = 0;
-      const interval = setInterval(() => {
-        if (width >= 100) {
-          clearInterval(interval);
-          torrentStatus.textContent = "Complete! Movie Saved to Local Device Storage.";
-          alert(`Download Successful:\n"${activeMovie.title}" downloaded using magnet registry.`);
-        } else {
-          width += 10;
-          torrentFill.style.width = width + "%";
-          torrentStatus.textContent = `Downloading: ${width}% (Peers: 147 | Speed: 11.2 MB/s)`;
+      const dlBox = document.getElementById("dl-progress-box");
+      const dlFill = document.getElementById("dl-fill-progress");
+      const dlStatus = document.getElementById("dl-status-text");
+
+      dlBox.style.display = "block";
+      dlFill.style.width = "0%";
+      dlStatus.textContent = "Connecting to file stream nodes...";
+
+      try {
+        const response = await fetch(activeMovie.streamUrl);
+        if (!response.ok) throw new Error("Network stream block refused connection.");
+        
+        const contentLength = response.headers.get('content-length');
+        if (!contentLength) {
+          // No content-length header fallback simulation
+          let fakeProgress = 0;
+          dlStatus.textContent = "Streaming source binary data...";
+          const interval = setInterval(() => {
+            fakeProgress += 15;
+            if (fakeProgress >= 100) {
+              clearInterval(interval);
+            } else {
+              dlFill.style.width = `${fakeProgress}%`;
+            }
+          }, 400);
         }
-      }, 400);
+
+        // Setup real streaming download progress monitoring
+        const reader = response.body.getReader();
+        const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
+        let receivedBytes = 0;
+        let chunks = [];
+
+        while(true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          chunks.push(value);
+          receivedBytes += value.length;
+
+          if (totalBytes > 0) {
+            const percentage = Math.round((receivedBytes / totalBytes) * 100);
+            dlFill.style.width = `${percentage}%`;
+            dlStatus.textContent = `Saving: ${percentage}% finished`;
+          } else {
+            dlStatus.textContent = `Saving: ${(receivedBytes / (1024 * 1024)).toFixed(1)} MB saved...`;
+          }
+        }
+
+        // Assemble byte segments and launch filesystem trigger
+        const blob = new Blob(chunks, { type: "video/mp4" });
+        const downloadUrl = URL.createObjectURL(blob);
+        
+        const fileLink = document.createElement("a");
+        fileLink.href = downloadUrl;
+        fileLink.download = `${activeMovie.title}.mp4`;
+        document.body.appendChild(fileLink);
+        fileLink.click();
+
+        // Clean memory references
+        document.body.removeChild(fileLink);
+        URL.revokeObjectURL(downloadUrl);
+
+        dlFill.style.width = "100%";
+        dlStatus.textContent = "Download complete! Saved to local device.";
+      } catch (err) {
+        console.error(err);
+        dlStatus.textContent = "Direct download failed. Routing to backup tab stream saver...";
+        
+        // Backup link-open fallback
+        setTimeout(() => {
+          const a = document.createElement("a");
+          a.href = activeMovie.streamUrl;
+          a.setAttribute("download", `${activeMovie.title}.mp4`);
+          a.target = "_blank";
+          a.click();
+          dlBox.style.display = "none";
+        }, 1500);
+      }
     });
   }
 }
@@ -459,11 +566,12 @@ function openPlayer(movie) {
   title.textContent = movie.title;
   video.src = movie.streamUrl;
   video.load();
-  video.play().catch(e => {
-    console.log("Auto-play blocked by browser. User interaction required.");
+  video.play().catch(() => {
+    console.log("Browser auto-play rules delayed playback. Interaction required.");
   });
 
-  document.getElementById("torrent-progress-container").style.display = "none";
+  // Reset Download box
+  document.getElementById("dl-progress-box").style.display = "none";
   modal.classList.add("active-modal");
 }
 
